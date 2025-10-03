@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="./Img/MedMapa-icon-_2_.ico" type="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MedMapa</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="./style.css"/>
+
+</head>
+<body>
+  <div class="container">
+    <header class="appbar">
+      <div class="logo"><img src="./Img/MedMapa-icon.ico" alt="" class="ico"></div>
+      <div>
+        <h1>MedMapa</h1>
+        <p>Encontre exames na sua cidade</p>
+      </div>
+    </header>
+
+    <div class="filters">
+      <div class="custom-select" id="citySelect">
+        <div class="selected">Selecione a cidade</div>
+        <div class="options">
+          <div data-value="Parauapebas">Parauapebas</div>
+          <div data-value="Canaa">Canaã dos Carajás</div>
+        </div>
+      </div>
+
+      <div class="custom-select" id="examSelect">
+        <div class="selected">Selecione o exame</div>
+        <div class="options">
+          <input type="text" class="search-input" placeholder="🔍 Buscar exame..."/>
+          <div data-value="Ultrassonografia">Ultrassonografia</div>
+          <div data-value="Raio-X">Raio-X</div>
+          <div data-value="Mamografia">Mamografia</div>
+          <div data-value="Densitometria óssea">Densitometria óssea</div>
+          <div data-value="Radiologia">Radiologia</div>
+          <div data-value="Exames laboratoriais">Exames laboratoriais</div>
+          <div data-value="Exames bioquímicos">Exames bioquímicos</div>
+          <div data-value="Análises clínicas">Análises clínicas</div>
+          <div data-value="Centro de parto normal">Centro de parto normal</div>
+          <div data-value="Bioquímicos">Bioquímicos</div>
+          <div data-value="Hematológicos">Hematológicos</div>
+          <div data-value="Uroanálise">Uroanálise</div>
+          <div data-value="Sorologia">Sorologia</div>
+          <div data-value="Pronto atendimento clínico">Pronto atendimento clínico</div>
+          <div data-value="Exames hormonais">Exames hormonais</div>
+          <div data-value="Diagnóstico por Imagem">Diagnóstico por Imagem</div>
+        </div>
+      </div>
+
+      <button onclick="searchClinics()">Buscar</button>
+    </div>
+
+    <div class="results-map">
+      <div id="results"></div>
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
