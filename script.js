@@ -50,27 +50,54 @@ async function searchClinics() {
   const clinics = await loadClinics();
   const city = document.querySelector("#citySelect .selected").dataset.value || "";
   const exam = (document.querySelector("#examSelect .selected").dataset.value || "").toLowerCase();
-  const plan = (document.querySelector("#planSelect .selected").dataset.value || "");
+  const plan = (document.querySelector("#planSelect .selected").dataset.value || "").toLowerCase();
 
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "";
   markersLayer.clearLayers();
 
+  // 🔥 Validação (incluindo plano)
   if (!city || !exam || !plan) {
     resultsDiv.innerHTML = "<p style='text-align:center'>⚠️ Selecione a cidade, exame e o plano.</p>";
     return;
   }
 
-  const filtered = clinics.filter(c =>
-    c.city === city &&
-    c.exams.some(e => e.toLowerCase().includes(exam)) &&
-    (plan === "Todos" || c.plans.some(p => p.toLowerCase() === plan.toLowerCase()))
-  );
+  // 🔥 Filtro com múltiplos exames e múltiplos planos
+  const filtered = clinics.filter(c => {
+    const examsArray = c.exams.split(";").map(e => e.trim().toLowerCase());
+    const plansArray = c.plans.split(";").map(p => p.trim().toLowerCase());
 
+    return (
+      c.city === city &&
+      examsArray.some(e => e.includes(exam)) &&
+      plansArray.some(p => p.includes(plan))
+    );
+  });
+
+  // 🔥 Caso não encontre nada
   if (filtered.length === 0) {
     resultsDiv.innerHTML = "<p style='text-align:center'>❌ Nenhuma clínica encontrada.</p>";
     return;
   }
+
+  // 🔥 Exibe resultados (igual ao seu original)
+  filtered.forEach(c => {
+    const item = document.createElement("div");
+    item.className = "result-item";
+    item.innerHTML = `
+      <h3>${c.name}</h3>
+      <p><strong>Endereço:</strong> ${c.address}</p>
+      <p><strong>Exames:</strong> ${c.exams}</p>
+      <p><strong>Planos:</strong> ${c.plans}</p>
+    `;
+    resultsDiv.appendChild(item);
+
+    if (c.lat && c.lng) {
+      L.marker([c.lat, c.lng]).addTo(markersLayer).bindPopup(c.name);
+    }
+  });
+}
+
 
       const bounds = [];
 
@@ -135,3 +162,4 @@ async function searchClinics() {
       });
 
     });
+
