@@ -47,26 +47,31 @@
     let markersLayer = L.layerGroup().addTo(map);
 
     async function searchClinics() {
-      const clinics = await loadClinics();
-      const city = document.querySelector("#citySelect .selected").dataset.value || "";
-      const exam = (document.querySelector("#examSelect .selected").dataset.value || "").toLowerCase();
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "";
-      markersLayer.clearLayers();
+  const clinics = await loadClinics();
+  const city = document.querySelector("#citySelect .selected").dataset.value || "";
+  const exam = (document.querySelector("#examSelect .selected").dataset.value || "").toLowerCase();
+  const plan = (document.querySelector("#planSelect .selected").dataset.value || "");
 
-      if (!city || !exam) {
-        resultsDiv.innerHTML = "<p style='text-align:center'>⚠️ Selecione a cidade e o exame.</p>";
-        return;
-      }
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = "";
+  markersLayer.clearLayers();
 
-      const filtered = clinics.filter(c =>
-        c.city === city && c.exams.some(e => e.toLowerCase().includes(exam))
-      );
+  if (!city || !exam) {
+    resultsDiv.innerHTML = "<p style='text-align:center'>⚠️ Selecione a cidade e o exame.</p>";
+    return;
+  }
 
-      if (filtered.length === 0) {
-        resultsDiv.innerHTML = "<p style='text-align:center'>❌ Nenhuma clínica encontrada.</p>";
-        return;
-      }
+  const filtered = clinics.filter(c =>
+    c.city === city &&
+    c.exams.some(e => e.toLowerCase().includes(exam)) &&
+    (plan === "Todos" || c.plans.some(p => p.toLowerCase() === plan.toLowerCase()))
+  );
+
+  if (filtered.length === 0) {
+    resultsDiv.innerHTML = "<p style='text-align:center'>❌ Nenhuma clínica encontrada.</p>";
+    return;
+  }
+
 
       const bounds = [];
 
